@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+
+# Go build output
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go modules
+vendor/
+
+# IDE/editor
+.vscode/
+.idea/
