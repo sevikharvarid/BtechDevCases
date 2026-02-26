@@ -11,6 +11,9 @@ func main() {
 		AppName: "JWT Auth Take-Home Backend",
 	})
 
+	app.Get("/health", func(c fiber.Ctx) error {
+		return c.JSON(fiber.Map{"status": "ok"})
+	})
 
 	log.Fatal(app.Listen(":8080"))
 }
