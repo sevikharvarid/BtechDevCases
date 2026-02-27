@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v3"
 
 	"github.com/sevikharvarid/BtechDevCases/backend/internal/usecase"
-
 )
 
 type AuthHandler struct {
