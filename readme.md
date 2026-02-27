@@ -1,62 +1,113 @@
-# Take-home Assignment: Auth with JWT (TypeScript)
+# Mobile App (Flutter) – JWT Auth Take-Home
 
-Build a small application in **TypeScript/Go/C#** that supports user **registration** and **login** using **JWT**.
-You can choose any stack or structure you want.
-As long as the core auth flow works end-to-end, it’s accepted.
+Flutter mobile application that connects to a Go (Fiber) backend for JWT-based authentication.
 
----
+## Main Features
+
+- **Register** (with auto-login on success)  
+- **Login**  
+- **Protected dashboard** – shows `Hello [email], welcome back`  
+- **Auto-logout after 15 minutes of inactivity** (client-side)  
+- **Secure token storage** using `flutter_secure_storage`  
+- **State management**: Bloc + Cubit + Freezed + `ViewData` pattern  
 
 ## Requirements
 
-### 1. Register
+- **Flutter SDK** ≥ 3.38.9  
+- **Docker & Docker Compose** (for running the backend)  
+- **Android Emulator** or physical device
 
-- Fields: `email`, `password`, `confirmPassword`
+## Mobile Folder Structure
 
-### 2. Login
-
-- Input: `email`, `password`
-- Return: **JWT**
-- Token should contain at least:
-
-  - `email`
-  - `user id` or similar identifier
-
-### 3. Authenticated View / Endpoint
-
-After successful login, calling the protected route / loading the protected screen should show:
-
-```
-Hello [email], welcome back
+```text
+mobile/
+├── lib/
+│   ├── core/              # shared: network, constants, common state
+│   ├── features/
+│   │   └── auth/          # auth feature (cubit, screens, entities)
+│   └── routes/            # go_router configuration
+├── pubspec.yaml
+└── README.md
 ```
 
-user should be logged out after 15 minutes of inacitvity
+## Run End-to-End (Backend + Mobile)
 
----
+### 1. Start the backend (from repo root)
 
-## What to deliver
+From the **root repository** (not inside `mobile/`):
 
-- Fork this repository and then send the link
-- A runnable project (any structure).
-- README explaining:
+```bash
+docker compose up --build
+```
 
-  - How to build and run it (prepare docker compose)
-  - Required environment variables
+Wait until you see a log similar to:  
+`INFO Server started on: http://127.0.0.1:8080`  
+The backend is now live on port **8080** (keep this terminal open).
 
----
+### 2. Go to the mobile app folder
 
-## Acceptance criteria
+```bash
+cd mobile
+```
 
-- Registration works with validation.
-- Login returns a usable JWT.
-- A protected route or screen shows the welcome message using JWT auth.
+### 3. Install dependencies
 
----
+```bash
+flutter pub get
+```
 
-## Optional bonus
+### 4. Set the correct API base URL (important)
 
-- Docker
-- Backend built using Go (or their frameworks)
-- Frontend built using React/Vue (or their frameworks)
-- Tests (unit or integration)
+Open `lib/core/network/dio_client.dart` and set `baseUrl` according to your environment:
 
-This keeps the scope tight: just registration, login, and a protected “Hello [email]” flow.
+```dart
+final dio = Dio(
+  BaseOptions(
+    baseUrl: 'http://10.0.2.2:8080/api',    // Android Emulator (recommended)
+    // baseUrl: 'http://localhost:8080/api',   // Physical device (replace xxx with your Mac's IP)
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
+  ),
+);
+```
+
+**Find your Mac IP (for physical device):**
+
+- System Settings → Network → Wi‑Fi → Details → IP address (e.g. `192.168.1.100`)  
+- Ensure phone and Mac are on the **same Wi‑Fi network**.
+
+### 5. Run the app
+
+On emulator/simulator:
+
+```bash
+flutter run
+```
+
+On physical device (Android via USB):
+
+```bash
+flutter devices               # list connected devices
+flutter run -d <device-id>    # example: flutter run -d abc123
+```
+
+The app will build, install, and launch automatically.  
+For hot reload, press `r` in the terminal.
+
+### 6. Test the end-to-end flow
+
+- Splash screen → redirects to **Login** (if not logged in)  
+- Register → fill email/password/confirm → submit → auto-login → goes to **Dashboard**  
+- Dashboard → shows `Hello [email], welcome back` (from `/protected` API)  
+- Logout → returns to **Login**  
+- Manual login → back to **Dashboard**  
+- Wait ~15 minutes without interaction → auto-logout → back to **Login**  
+- Stop backend (`Ctrl + C` in Docker terminal) → app should show a network error  
+
+## Build APK / AAB
+
+Build **release APK** (for manual install on Android phone):
+
+```bash
+flutter build apk --release
+# Output: build/app/outputs/flutter-apk/app-release.apk
