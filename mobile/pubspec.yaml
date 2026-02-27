@@ -1,0 +1,47 @@
+name: mobile
+description: Btech Dev Cases Mobile App
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.10.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # Routing
+  go_router: 17.0.1
+
+  # State Management
+  flutter_bloc: 9.1.1
+  bloc: 9.2.0
+  equatable: 2.0.8
+
+  # Local Storage
+  flutter_secure_storage: 9.2.4
+
+  # Network & Debugging
+  dio: 5.9.0
+
+  # Code Generation
+  freezed: 3.2.4
+
+  # CLI
+  json_annotation: 4.9.0
+  freezed_annotation: 3.1.0
+
+   # Dependency Injection
+  get_it: 9.2.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Linting & Code Style
+  flutter_lints: 6.0.0
+
+  # Build Tools
+  build_runner: 2.10.5
