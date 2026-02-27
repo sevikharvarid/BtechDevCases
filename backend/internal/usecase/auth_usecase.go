@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -54,9 +53,9 @@ func (u *AuthUsecase) Register(input RegisterInput) error {
 		return err
 	}
 
-		user := domain.NewUser(
-			uuid.New().String(),
-			input.Email,
+	user := domain.NewUser(
+		uuid.New().String(),
+		input.Email,
 		string(hashedPassword),
 	)
 
@@ -80,7 +79,7 @@ func (u *AuthUsecase) Login(input LoginInput) (*LoginResult, error) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		return nil, ErrInvalidCredentials
-	
+	}
 
 	token, err := u.jwtService.GenerateToken(user.ID, user.Email)
 	if err != nil {

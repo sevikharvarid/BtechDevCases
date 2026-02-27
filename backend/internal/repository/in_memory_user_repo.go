@@ -3,9 +3,6 @@ package repository
 import (
 	"errors"
 	"sync"
-
-	"github.com/google/uuid"
-
 	"github.com/sevikharvarid/BtechDevCases/backend/internal/domain"  
 )
 

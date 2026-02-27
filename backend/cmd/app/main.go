@@ -13,8 +13,7 @@ import (
 
 func main() {
 	app := fiber.New(fiber.Config{
-		AppName:           "JWT Auth Take-Home Backend",
-		EnablePrintRoutes: true,
+		AppName: "Btech Dev Cases Backend",
 	})
 
 	//* Dependencies
