@@ -14,3 +14,9 @@ Lokasi: `/backend`
 ```bash
 cd backend
 go run cmd/app/main.go
+```
+
+### Cara Run dengan Docker 
+```bash
+# Dari root repo
+docker compose up --build
